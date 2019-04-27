@@ -19,5 +19,19 @@ class ArticlesController < ApplicationController
     redirect_to article_path(@article)
   end
 
-  # add edit and update methods here
+  def edit
+    @article = Article.find(params[:id])
+  end
+
+  def update
+    data = params[:article].permit(:title, :description)
+    @article = Article.find(params[:id])
+    if @article.update_attributes(data)
+      flash[:success] = 'Article was successfully updated'
+      redirect_to @article
+    else
+      flash[:error] = 'Something went wrong'
+      render 'edit'
+    end
+    end
 end
